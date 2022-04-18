@@ -1,0 +1,159 @@
+Tugas 12
+
+
+Jawaban:
+1.	MariaDB [tugas_12_database]> DROP TABLE IF EXISTS nilai_mahasiswa;
+	Query OK, 0 rows affected, 1 warning (0.005 sec)
+
+	MariaDB [tugas_12_database]> CREATE TABLE nilai_mahasiswa (
+	    -> nim CHAR(8) PRIMARY KEY,
+	    -> nama VARCHAR(50),
+	    -> semester_1 DECIMAL(4,2),
+	    -> semester_2 DECIMAL(4,2),
+	    -> semester_3 DECIMAL(4,2)
+	    -> ) ENGINE = InnoDB;
+	Query OK, 0 rows affected (0.092 sec)
+
+	MariaDB [tugas_12_database]> INSERT INTO nilai_mahasiswa VALUES
+	    -> ('17090113', 'Riana Putria', 3.12, 2.98, 3.45),
+	    -> ('17140143', 'Rudi Permana', 2.56, 3.14, 3.22),
+	    -> ('17080305', 'Rina Kumala Sari', 3.45, 2.56, 3.67),
+	    -> ('17140119', 'Sandri Fatmala', 2.12, 2.78, 2.56),
+	    -> ('17090308', 'Christine Wijaya', 3.78, 3.23, 3.11);
+	Query OK, 5 rows affected (0.007 sec)
+	Records: 5  Duplicates: 0  Warnings: 0
+
+	MariaDB [tugas_12_database]> select * from nilai_mahasiswa;
+	+----------+------------------+------------+------------+------------+
+	| nim      | nama             | semester_1 | semester_2 | semester_3 |
+	+----------+------------------+------------+------------+------------+
+	| 17080305 | Rina Kumala Sari |       3.45 |       2.56 |       3.67 |
+	| 17090113 | Riana Putria     |       3.12 |       2.98 |       3.45 |
+	| 17090308 | Christine Wijaya |       3.78 |       3.23 |       3.11 |
+	| 17140119 | Sandri Fatmala   |       2.12 |       2.78 |       2.56 |
+	| 17140143 | Rudi Permana     |       2.56 |       3.14 |       3.22 |
+	+----------+------------------+------------+------------+------------+
+	5 rows in set (0.001 sec)
+
+	MariaDB [tugas_12_database]> CREATE VIEW nilai_ipk AS
+	    -> SELECT
+	    -> nim,
+	    -> nama,
+	    -> cast((semester_1+semester_2+semester_3)/3 as decimal(4,2))IPK
+	    -> FROM nilai_mahasiswa;
+	Query OK, 0 rows affected (0.045 sec)
+
+	MariaDB [tugas_12_database]> SELECT * FROM nilai_ipk;
+	+----------+------------------+------+
+	| nim      | nama             | IPK  |
+	+----------+------------------+------+
+	| 17080305 | Rina Kumala Sari | 3.23 |
+	| 17090113 | Riana Putria     | 3.18 |
+	| 17090308 | Christine Wijaya | 3.37 |
+	| 17140119 | Sandri Fatmala   | 2.49 |
+	| 17140143 | Rudi Permana     | 2.97 |
+	+----------+------------------+------+
+	5 rows in set (0.057 sec)
+
+	MariaDB [tugas_12_database]>
+
+
+
+
+2.	MariaDB [tugas_12_database]> CREATE VIEW nilai_ipk_format AS
+	    -> SELECT
+	    -> CONCAT(nama,' (', IPK,')') AS 'Nama dan IPK'
+	    -> FROM nilai_ipk
+	    -> ORDER BY IPK DESC;
+	Query OK, 0 rows affected (0.058 sec)
+
+	MariaDB [tugas_12_database]> SELECT * FROM nilai_ipk_format;
+	+-------------------------+
+	| Nama dan IPK            |
+	+-------------------------+
+	| Christine Wijaya (3.37) |
+	| Rina Kumala Sari (3.23) |
+	| Riana Putria (3.18)     |
+	| Rudi Permana (2.97)     |
+	| Sandri Fatmala (2.49)   |
+	+-------------------------+
+	5 rows in set (0.034 sec)
+
+	MariaDB [tugas_12_database]>
+
+
+
+
+3.	MariaDB [tugas_12_database]> INSERT INTO nilai_mahasiswa VALUES
+	    -> ('17090110', 'Abdullah Hanif Arif', 3.25, 3.45, 3.57);
+	Query OK, 1 row affected (0.057 sec)
+
+	MariaDB [tugas_12_database]> SELECT * FROM nilai_ipk;
+	+----------+---------------------+------+
+	| nim      | nama                | IPK  |
+	+----------+---------------------+------+
+	| 17080305 | Rina Kumala Sari    | 3.23 |
+	| 17090110 | Abdullah Hanif Arif | 3.42 |
+	| 17090113 | Riana Putria        | 3.18 |
+	| 17090308 | Christine Wijaya    | 3.37 |
+	| 17140119 | Sandri Fatmala      | 2.49 |
+	| 17140143 | Rudi Permana        | 2.97 |
+	+----------+---------------------+------+
+	6 rows in set (0.001 sec)
+
+	MariaDB [tugas_12_database]> SELECT * FROM nilai_ipk_format;
+	+----------------------------+
+	| Nama dan IPK               |
+	+----------------------------+
+	| Abdullah Hanif Arif (3.42) |
+	| Christine Wijaya (3.37)    |
+	| Rina Kumala Sari (3.23)    |
+	| Riana Putria (3.18)        |
+	| Rudi Permana (2.97)        |
+	| Sandri Fatmala (2.49)      |
+	+----------------------------+
+	6 rows in set (0.001 sec)
+
+	MariaDB [tugas_12_database]>
+
+
+
+
+4.	MariaDB [tugas_12_database]> SELECT * FROM nilai_ipk_format WHERE `Nama dan IPK` LIKE 'R%';
+	+-------------------------+
+	| Nama dan IPK            |
+	+-------------------------+
+	| Rina Kumala Sari (3.23) |
+	| Riana Putria (3.18)     |
+	| Rudi Permana (2.97)     |
+	+-------------------------+
+	3 rows in set (0.001 sec)
+
+	MariaDB [tugas_12_database]>
+
+
+
+
+
+5.	MariaDB [tugas_12_database]> SHOW TABLES;
+	+-----------------------------+
+	| Tables_in_tugas_12_database |
+	+-----------------------------+
+	| nilai_ipk                   |
+	| nilai_ipk_format            |
+	| nilai_mahasiswa             |
+	+-----------------------------+
+	3 rows in set (0.048 sec)
+
+	MariaDB [tugas_12_database]> DROP VIEW nilai_ipk, nilai_ipk_format;
+	Query OK, 0 rows affected (0.065 sec)
+
+	MariaDB [tugas_12_database]> SHOW TABLES;
+	+-----------------------------+
+	| Tables_in_tugas_12_database |
+	+-----------------------------+
+	| nilai_mahasiswa             |
+	+-----------------------------+
+	1 row in set (0.047 sec)
+
+	MariaDB [tugas_12_database]>
